@@ -1,38 +1,33 @@
 import React, { useState } from "react";
 
+function Checkbox({ label, checked, onChange }) {
+  return (
+    <div className="display">
+      <div className="checkbox">
+        <input
+          checked={checked}
+          onChange={onChange}
+          type="checkbox"
+        />
+      </div>
+      <div>
+        <h4>{label}</h4>
+        <p>{label === "Online service" ? "Access to multiplayer games" : `Extra 1TB of ${label.toLowerCase()}`}</p>
+      </div>
+    </div>
+  );
+}
+
 function Slide3({ formData, setFormData }) {
+  const [subscription] = useState(formData.Duration.side);
 
-  const [isChecked, setIsChecked] = useState(formData.Addons.service);
-  const [isChecked2, setIsChecked2] = useState(formData.Addons.storage);
-  const [isChecked3, setIsChecked3] = useState(formData.Addons.profile);
-  let subscription = formData.Duration.side;
-
-
-  const handleCheckboxChange1 = () => {
-    const updatedIsChecked = !isChecked;
-    setIsChecked(updatedIsChecked);
-
+  const handleCheckboxChange = (addonName) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
-      Addons: { ...prevFormData.Addons, service: updatedIsChecked },
-    }));
-  };
-  const handleCheckboxChange2 = () => {
-    const updatedIsChecked2 = !isChecked2;
-    setIsChecked2(updatedIsChecked2);
-
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      Addons: { ...prevFormData.Addons, storage: updatedIsChecked2 },
-    }));
-  };
-  const handleCheckboxChange3 = () => {
-    const updatedIsChecked3 = !isChecked3;
-    setIsChecked3(updatedIsChecked3);
-
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      Addons: { ...prevFormData.Addons, profile: updatedIsChecked3 },
+      Addons: {
+        ...prevFormData.Addons,
+        [addonName]: !prevFormData.Addons[addonName],
+      },
     }));
   };
 
@@ -42,58 +37,28 @@ function Slide3({ formData, setFormData }) {
       <p>Add-ons help enhance your gaming experience.</p>
       <div className="add-ons">
         <div className="add">
-          <div className="display">
-            <div className="checkbox">
-              <input
-                checked={formData.Addons.service}
-                onChange={handleCheckboxChange1}
-                type="checkbox"
-                name="add-on-1"
-                id="add-on-1"
-              />
-            </div>
-            <div>
-              <h4>Online service</h4>
-              <p>Access to multiplayer games</p>
-            </div>
-          </div>
+          <Checkbox
+            label="Online service"
+            checked={formData.Addons.service}
+            onChange={() => handleCheckboxChange("service")}
+          />
           <p className="cost">{!subscription ? "+$1/mo" : "+$10/yr"}</p>
         </div>
         <div className="add">
-          <div className="display">
-            <div className="checkbox">
-              <input
-                checked={formData.Addons.storage} 
-                onChange={handleCheckboxChange2}
-                type="checkbox"
-                name="add-on-2"
-                id="add-on-2"
-              />
-            </div>
-            <div>
-              <h4>Larger storage</h4>
-              <p>Extra 1TB of cloud save</p>
-            </div>
-          </div>
-          <p className="cost">{!subscription ? "+$2/mo" : "+20/yr"}</p>
+          <Checkbox
+            label="Larger storage"
+            checked={formData.Addons.storage}
+            onChange={() => handleCheckboxChange("storage")}
+          />
+          <p className="cost">{!subscription ? "+$2/mo" : "+$20/yr"}</p>
         </div>
         <div className="add">
-          <div className="display">
-            <div className="checkbox">
-              <input
-                checked={formData.Addons.profile} 
-                onChange={handleCheckboxChange3}
-                type="checkbox"
-                name="add-on-3"
-                id="add-on-3"
-              />
-            </div>
-            <div>
-              <h4>Customizable Profile</h4>
-              <p>Custom theme on your profile</p>
-            </div>
-          </div>
-          <p className="cost">{!subscription ? "+$2/mo" : "+20/yr"}</p>
+          <Checkbox
+            label="Customizable Profile"
+            checked={formData.Addons.profile}
+            onChange={() => handleCheckboxChange("profile")}
+          />
+          <p className="cost">{!subscription ? "+$2/mo" : "+$20/yr"}</p>
         </div>
       </div>
     </div>
