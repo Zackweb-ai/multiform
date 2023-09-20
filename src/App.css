@@ -331,7 +331,7 @@ align-items: center;
   font-weight: 600;
 }
 .selected{
-  background-color: hsl(231, 100%, 99%);
+  background-color: hsl(240, 11%, 93%);
 }
 .change{
   cursor: pointer;
